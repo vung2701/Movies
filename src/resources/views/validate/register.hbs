@@ -1,0 +1,173 @@
+<div class="validate-bg">
+    <div class="validate-modal">
+        <h3 class="validate-heading">Sign up</h3>
+        <form
+            class="d-flex flex-column"
+            id="register-form"
+            method="POST"
+            action="/validate/register"
+        >
+            <div class="form-group">
+                <label for="usernameInput">Username</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    id="usernameInput"
+                    aria-describedby="emailHelp"
+                    placeholder="Enter username"
+                    name="username"
+                    require
+                />
+                {{#if isExists}}
+                    <span class="validate-error">Username is exists</span>
+                {{/if}}
+                <span class="validate-error" id="errorusername">Username al
+                    least 5 chars</span>
+            </div>
+            <div class="form-group">
+                <label for="passwordInput">Password</label>
+                <input
+                    type="password"
+                    class="form-control"
+                    id="passwordInput"
+                    placeholder="Password"
+                    name="password"
+                    required
+                />
+                <span class="validate-error" id="errorpass">Pasword must 6 chars</span>
+                <i class="eye-icon fa-regular fa-eye"></i>
+            </div>
+            <div class="form-group">
+                <label for="confirmPasswordInput"> Confirm Password</label>
+                <input
+                    type="password"
+                    class="form-control"
+                    id="confirmPasswordInput"
+                    placeholder="Confirm Password"
+                    name="confirmPassword"
+                    required
+                />
+                <span class="validate-error" id="errorconpass">Password not
+                    match</span>
+                <i class="eye-icon fa-regular fa-eye"></i>
+            </div>
+            <button type="submit" class="btn btn-primary mt-4">Sign up</button>
+        </form>
+
+        <div class="validate-social text-center mt-4">
+            <div>Sign up with</div>
+            <div class="d-flex mt-2">
+                <i class="validate-social__icon fa-brands fa-facebook"></i>
+
+                <i class="validate-social__icon fa-brands fa-google"></i>
+
+                <i class="validate-social__icon fa-brands fa-instagram"></i>
+            </div>
+        </div>
+
+        <p class="text-center mt-4">Have account?
+            <a href="/validate/login">Login</a></p>
+    </div>
+</div>
+
+{{! Validate Script }}
+{{! prettier-ignore }}
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+      $('#errorusername').hide();
+      $('#errorpass').hide();
+      $('#errorconpass').hide();
+    
+      var error_username = false;
+      var error_pass = false;
+      var error_conpass = false;   
+
+        var name = $('#usernameInput').val();
+        var pattern = new RegExp(/^[a-zA-Z ]{5,30}$/);
+        if (!pattern.test(name)) {
+          $('#errorname').html('Should be between 5-30 contains only space');
+          $('#errorname').show(300);
+          error_name = true;
+        }
+        else {
+            $('#errorname').hide(400);
+        }
+      
+      // check username
+      function checkUserName(){
+        var username = $('#usernameInput').val();
+        var pattern = new RegExp(/^[a-zA-Z0-9._]{6,20}$/);
+        if (!pattern.test(username)) {
+          $('#errorusername').html('Should be between 6-20 contains only alphabets numbers . _');
+          $('#errorusername').show(300);
+          error_username = true;
+        }
+        else {
+            $('#errorusername').hide(400);
+        }
+      }
+    
+      // check password
+      function checkPass(){
+        var password = $('#passwordInput').val();
+        var pattern = new RegExp(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/);
+    
+        if (!pattern.test(password)) {
+          $('#errorpass').html('Should be at least a uppercase,lowercase,number,special characters and minimum length 8');
+          $('#errorpass').show(300);
+          error_pass = true;
+        }
+        else {
+            $('#errorpass').hide(400);
+        }
+      }
+    
+      // check confirm password
+      function checkConPass(){
+        var password = $('#passwordInput').val();
+        var con_pass = $('#confirmPasswordInput').val();
+        if (password != con_pass) {
+          $('#errorconpass').html('Password not match');
+          $('#errorconpass').show(300);
+          error_conpass = true;
+        }
+        else {
+            $('#errorconpass').hide(400);
+        }
+      }
+    
+      //form submit
+      $('#register-form').submit(function(){
+        error_username = false;
+        error_pass = false;
+        error_conpass = false;
+        checkUserName();
+        checkPass();
+        checkConPass();
+    
+        if (error_username == false && error_pass == false && error_conpass == false) {
+          return true;
+        }
+        else {
+          return false;
+        }
+
+      });
+
+      //show hide password
+      $('.eye-icon').click(function(){
+        var x = document.getElementById("passwordInput");
+        var y = document.getElementById("confirmPasswordInput");
+        if (x.type === "password") {
+          x.type = "text";
+          y.type = "text";
+        } else {
+          x.type = "password";
+          y.type = "password";
+        }
+      })
+
+
+
+    });
+</script>

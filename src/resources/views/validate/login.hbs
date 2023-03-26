@@ -1,0 +1,75 @@
+<div class="validate-bg">
+    <div class="validate-modal">
+        <h3 class="validate-heading">Login</h3>
+        <form
+            class="d-flex flex-column"
+            id="login-form"
+            method="POST"
+            action="/validate/login"
+        >
+            <div class="form-group">
+                <label for="usernameInput">Username</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    id="usernameInput"
+                    aria-describedby="emailHelp"
+                    placeholder="Enter username"
+                    name="username"
+                    require
+                />
+
+            </div>
+            <div class="form-group">
+                <label for="passwordInput">Password</label>
+                <input
+                    type="password"
+                    class="form-control"
+                    id="passwordInput"
+                    placeholder="Password"
+                    name="password"
+                    required
+                />
+                <i class="eye-icon fa-regular fa-eye"></i>
+
+            </div>
+            {{#if isLoginFalse}}
+                <p class="validate-error text-center">Username or password is
+                    not correct</p>
+            {{/if}}
+            <a class="mt-2" href="/">Forgot password?</a>
+            <button type="submit" class="btn btn-primary mt-2">Login</button>
+        </form>
+
+        <div class="validate-social text-center mt-4">
+            <div>Sign up with</div>
+            <div class="d-flex mt-2">
+                <i class="validate-social__icon fa-brands fa-facebook"></i>
+
+                <i class="validate-social__icon fa-brands fa-google"></i>
+
+                <i class="validate-social__icon fa-brands fa-instagram"></i>
+            </div>
+        </div>
+
+        <p class="text-center mt-4">Not a member?
+            <a href="/validate/register">Sign up</a></p>
+    </div>
+</div>
+
+{{! Validate Script }}
+{{! prettier-ignore }}
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+        //show hide password
+      $('.eye-icon').click(function(){
+        var x = document.getElementById("passwordInput");
+        if (x.type === "password") {
+          x.type = "text";
+        } else {
+          x.type = "password";
+        }
+      })
+
+    });
+</script>

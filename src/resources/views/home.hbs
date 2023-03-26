@@ -1,0 +1,21 @@
+<div class="container">
+    <div class="row">
+        {{#each films}}
+            <div class="card mt-4" style="width: 250px;">
+                <img
+                    alt=""
+                    style="background-color: transparent;"
+                    class="yt-core-image--fill-parent-height yt-core-image--fill-parent-width yt-core-image yt-core-image--content-mode-scale-aspect-fill yt-core-image--loaded"
+                    src="https://i.ytimg.com/vi/{{this.videoId}}/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&amp;
+ rs=AOn4CLBWsfznj1R4fm1LJBbPA8ac0-LBdQ"
+                />
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{this.title}}</h5>
+                    <p class="card-text">{{this.plot}}</p>
+                    <a href="/films/{{this.slug}}" class="btn btn-success">Watch
+                        now</a>
+                </div>
+            </div>
+        {{/each}}
+    </div>
+</div>

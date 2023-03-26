@@ -1,0 +1,193 @@
+<form class="container mt-4" method="POST" action="/films/handle-form-actions">
+    <a href="/me/stored-films">My Film</a>
+    <h3>Deleted Film</h3>
+
+    <div class="mt-4 d-flex flex-align-center">
+        <div class="form-check">
+            <input
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                id="checkbox-all"
+            />
+            <label class="form-check-label" for="checkbox-all">
+                Select all
+            </label>
+        </div>
+
+        <select
+            class="form-select ml-2 checkbox-select-all-options"
+            aria-label="Default select example"
+            name="action"
+            required
+        >
+            <option value="" selected>-- Select action --</option>
+            <option value="restore">Restore</option>
+            <option value="destroy">Delete Force</option>
+        </select>
+
+        <button
+            class="btn btn-sm btn-primary btn-checkbox-all-submit"
+            disabled
+        >Execute</button>
+    </div>
+
+    <table class="table table-bordered mt-2">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">
+                    Title
+                    {{{sortable "title" _sort}}}
+                </th>
+                <th scope="col">VideoId</th>
+                <th scope="col">
+                    Actor
+                    {{{sortable "actor" _sort}}}
+                </th>
+                <th scope="col">
+                    Director
+                    {{{sortable "director" _sort}}}
+                </th>
+                <th scope="col">Deleted at</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each films}}
+                <tr>
+                    <th class="table-secondary d-flex" scope="row">
+                        <input
+                            class="checkbox-item mr-2"
+                            type="checkbox"
+                            name="filmIds[]"
+                            value="{{this._id}}"
+                        />
+                        {{sum @index 1}}
+                    </th>
+                    <td>{{this.title}}</td>
+                    <td>{{this.videoId}}</td>
+                    <td>{{this.actor}}</td>
+                    <td>{{this.director}}</td>
+                    <td>{{this.deletedAt}}</td>
+                    <td class="d-flex">
+                        <a
+                            id="restore-btn"
+                            class="btn btn-primary"
+                            data-id="{{this._id}}"
+                            href="#"
+                        >Restore</a>
+                        <a
+                            class="btn btn-danger ml-2"
+                            href="#"
+                            data-toggle="modal"
+                            data-id="{{this._id}}"
+                            data-target="#delete-force-film-modal"
+                        >Delete Force</a>
+                    </td>
+                </tr>
+            {{else}}
+                <tr>
+                    <td class="text-center" colspan="7">
+                        Recycle bin is empty.
+                        <a href="/me/stored-films">My Film</a>
+                    </td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</form>
+
+{{! Delete Force Film modal }}
+<div id="delete-force-film-modal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Film Forever</h5>
+                <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                >
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Do you sure delete this film forever? This action don't
+                    restore!</p>
+            </div>
+            <div class="modal-footer">
+                <button
+                    id="modal-delete-force-btn"
+                    type="button"
+                    class="btn btn-danger"
+                >Delete Force</button>
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal"
+                >Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{! form delete force method submit }}
+<form name="delete-force-film-form" method="POST"></form>
+
+{{! form restore method submit }}
+<form name="restore-film-form" method="POST"></form>
+
+{{! Delete handle }}
+{{! prettier-ignore }}
+<script>
+    document.addEventListener("DOMContentLoaded", function(){ 
+        var deleteForceModal = $('#delete-force-film-modal'); 
+        var modalDeleteForceBtn = $('#modal-delete-force-btn');
+        var deleteForceForm = document.forms["delete-force-film-form"];
+        var restoreForm = document.forms["restore-film-form"];
+        var restoreBtn = $('#restore-btn');
+        var filmId;
+        var checkboxAll = $('#checkbox-all');
+        var filmItemCheckbox = $('input[name="filmIds[]"]');
+        var checkboxAllSubmit = $('.btn-checkbox-all-submit');
+
+        deleteForceModal.on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+            filmId = id;
+        });
+
+        modalDeleteForceBtn.on('click', function (e) {
+            e.preventDefault();
+            deleteForceForm.action = "/films/destroy/" + filmId + "?_method=DELETE";
+            deleteForceForm.submit();
+        });
+
+        restoreBtn.on('click', function (e) {
+            e.preventDefault();
+            filmId = $(this).data('id');
+            restoreForm.action = "/films/restore/" + filmId + "?_method=PATCH";
+            restoreForm.submit();
+        });
+
+        checkboxAll.change(function (){
+            var isCheckedAll = $(this).prop('checked');
+            filmItemCheckbox.prop('checked', isCheckedAll);
+            RenderCheckboxAllSubmit();
+        });
+
+        filmItemCheckbox.change(function () {
+            var isCheckedAll = filmItemCheckbox.length === $('input[name="filmIds[]"]:checked').length;
+            checkboxAll.prop('checked', isCheckedAll);
+            RenderCheckboxAllSubmit();
+        })
+
+        function RenderCheckboxAllSubmit(){
+            var checkboxCount = $('input[name="filmIds[]"]:checked').length;
+            checkboxAllSubmit.attr('disabled',checkboxCount == 0);
+        }
+    });
+</script>

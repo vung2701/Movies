@@ -1,0 +1,35 @@
+<section class="hero-unit">
+    <div class="container">
+        {{#with film}}
+            <div class="hero-image">
+                <img
+                    alt=""
+                    style="background-color: transparent;"
+                    class="yt-core-image--fill-parent-height yt-core-image--fill-parent-width yt-core-image yt-core-image--content-mode-scale-aspect-fill yt-core-image--loaded"
+                    src="https://i.ytimg.com/vi/{{this.videoId}}/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&amp;
+ rs=AOn4CLBWsfznj1R4fm1LJBbPA8ac0-LBdQ"
+                />
+                <iframe
+                    src="https://www.youtube.com/embed/{{videoId}}"
+                    title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen
+                ></iframe>;
+            </div>
+            <div class="hero-content">
+                <h2 class="hero-content__header">{{title}}</h2>
+                <div class="d-flex flex-align-center justify-content-between">
+                    <strong class="hero-content__plot">{{plot}}</strong>
+                    <div class="hero-content__para">
+                        <p><strong>Genre</strong>: {{genre}}</p>
+                        <p><strong>Rating</strong>: {{rating}}</p>
+                        <p><strong>Year</strong>: {{year}}</p>
+                        <p><strong>Director</strong>: {{director}}</p>
+                        <p><strong>Actor</strong>: {{actor}}</p>
+                    </div>
+                </div>
+            </div>
+        {{/with}}
+    </div>
+</section>

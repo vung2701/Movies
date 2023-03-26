@@ -1,0 +1,191 @@
+<form class="container mt-4" method="POST" action="/films/handle-form-actions">
+    <h3>My Film</h3>
+    <a href="/me/trash-films">Recycle Bin ({{deletedFilmsCount}})</a>
+
+    <div class="mt-4 d-flex flex-align-center">
+        <div class="form-check">
+            <input
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                id="checkbox-all"
+            />
+            <label class="form-check-label" for="checkbox-all">
+                Select all
+            </label>
+        </div>
+
+        <select
+            class="form-select ml-2 checkbox-select-all-options"
+            aria-label="Default select example"
+            name="action"
+            required
+        >
+            <option value="" selected>-- Select action --</option>
+            <option value="delete">Delete</option>
+        </select>
+
+        <button
+            class="btn btn-sm btn-primary btn-checkbox-all-submit"
+            disabled
+        >Execute</button>
+    </div>
+
+    <table class="table table-bordered mt-2">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">
+                    <div class="d-flex align-items-center">
+                        Title
+                        {{{sortable "title" _sort}}}
+                    </div>
+                </th>
+                <th scope="col">VideoId</th>
+                <th scope="col">
+                    <div class="d-flex align-items-center">
+                        Actor
+                        {{{sortable "actor" _sort}}}
+                    </div>
+                </th>
+                <th scope="col">
+                    <div class="d-flex align-items-center">
+                        Director
+                        {{{sortable "director" _sort}}}
+                    </div>
+                </th>
+                <th scope="col">Created at</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each films}}
+                <tr>
+                    <th class="table-secondary d-flex" scope="row">
+                        <input
+                            class="checkbox-item mr-2"
+                            type="checkbox"
+                            name="filmIds[]"
+                            value="{{this._id}}"
+                        />
+                        {{sum @index 1}}
+                    </th>
+                    <td>
+                        {{this.title}}
+                    </td>
+                    <td>{{this.videoId}}</td>
+                    <td>
+                        {{this.actor}}
+                    </td>
+                    <td>
+                        {{this.director}}
+                    </td>
+                    <td>{{this.createdAt}}</td>
+                    <td class="d-flex">
+                        <a
+                            class="btn btn-primary"
+                            href="/films/edit/{{this._id}}"
+                        >Edit</a>
+                        <a
+                            class="btn btn-danger ml-2"
+                            href="#"
+                            data-toggle="modal"
+                            data-id="{{this._id}}"
+                            data-target="#delete-film-modal"
+                        >Delete</a>
+                    </td>
+                </tr>
+            {{else}}
+                <tr>
+                    <td class="text-center" colspan="7">
+                        You haven't uploaded any films yet.
+                        <a href="/films/create">Upload film</a>
+                    </td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</form>
+
+{{! Delete Film modal }}
+<div id="delete-film-modal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Film</h5>
+                <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                >
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Do you sure delete this film?</p>
+            </div>
+            <div class="modal-footer">
+                <button
+                    id="modal-delete-btn"
+                    type="button"
+                    class="btn btn-danger"
+                >Delete</button>
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal"
+                >Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{! form delete method submit }}
+<form name="delete-film-form" method="POST"></form>
+
+{{! Delete handle }}
+{{! prettier-ignore }}
+<script>
+    document.addEventListener("DOMContentLoaded", function(){ 
+        var deleteModal = $('#delete-film-modal'); 
+        var modalDeleteBtn = $('#modal-delete-btn');
+        var deleteForm = document.forms["delete-film-form"];
+        var filmId;
+        var checkboxAll = $('#checkbox-all');
+        var filmItemCheckbox = $('input[name="filmIds[]"]');
+        var checkboxAllSubmit = $('.btn-checkbox-all-submit');
+
+
+        deleteModal.on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+            filmId = id;
+        });
+
+        modalDeleteBtn.on('click', function (e) {
+            e.preventDefault();
+            deleteForm.action = "/films/delete/" + filmId + "?_method=DELETE";
+            deleteForm.submit();
+        });
+        
+        checkboxAll.change(function (){
+            var isCheckedAll = $(this).prop('checked');
+            filmItemCheckbox.prop('checked', isCheckedAll);
+            RenderCheckboxAllSubmit();
+        });
+
+        filmItemCheckbox.change(function () {
+            var isCheckedAll = filmItemCheckbox.length === $('input[name="filmIds[]"]:checked').length;
+            checkboxAll.prop('checked', isCheckedAll);
+            RenderCheckboxAllSubmit();
+        })
+
+        function RenderCheckboxAllSubmit(){
+            var checkboxCount = $('input[name="filmIds[]"]:checked').length;
+            checkboxAllSubmit.attr('disabled',checkboxCount == 0);
+        }
+    });
+
+</script>
