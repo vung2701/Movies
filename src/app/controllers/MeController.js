@@ -35,5 +35,11 @@ class MeController {
             )
             .catch(next);
     }
+
+    // [GET] /me/profile
+    profile(req, res, next) {
+        const account = req.account;
+        res.render("me/profile", { account: JSON.stringify(account) });
+    }
 }
 module.exports = new MeController();

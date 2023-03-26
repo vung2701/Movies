@@ -39,12 +39,17 @@
                         aria-haspopup="true"
                         aria-expanded="false"
                     >
-                        <i class="fa-solid fa-user"></i>
+                        <img
+                            class="header-avatar"
+                            src="{{account.avatar}}"
+                            alt="avatar"
+                        />
+
                         <span class="ml-2">{{account.username}}</span>
                     </a>
 
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">My profile</a>
+                        <a class="dropdown-item" href="/me/profile">My profile</a>
                         {{#if (isAdmin account)}}
                             <a class="dropdown-item" href="/me/stored-films">My
                                 film</a>

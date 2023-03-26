@@ -11,17 +11,20 @@ class SearchController {
     // [POST] / search
     search(req, res, next) {
         let key = req.body.key;
+        const account = req.account;
+
         Film.find({
             $or: [
                 { title: { $regex: `${req.body.key}` } },
                 { actor: { $regex: `${req.body.key}` } },
-                { director: { $regex: `${req.body.key}` } },
+                { genre: { $regex: `${req.body.key}` } },
             ],
         })
             .then((films) =>
                 res.render("search", {
                     key,
                     films: multiMongooseToObject(films),
+                    account: JSON.stringify(account),
                 }),
             )
             .catch(next);

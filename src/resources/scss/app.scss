@@ -39,14 +39,19 @@
 
 .hero-image {
     position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70%;
 }
 
 .hero-image img {
+    object-fit: contain;
     width: 100%;
     height: auto;
 }
 
 .hero-image iframe {
+    object-fit: contain;
     position: absolute;
     top: 0;
     left: 0;
@@ -55,6 +60,8 @@
 }
 
 .hero-content {
+    width: 70%;
+    margin: 0 auto;
     padding: 24px 0;
 }
 .hero-content__header {
@@ -150,4 +157,15 @@
     height: 30px;
     background-color: #fff;
     z-index: 2;
+}
+
+// avatar
+.header-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.profile-avatar {
+    border-radius: 50%;
 }

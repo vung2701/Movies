@@ -32,7 +32,7 @@ class FilmsController {
     // [GET] /films/edit/:id
     edit(req, res, next) {
         const account = req.account;
-        Film.findOne({ id: req.params.id })
+        Film.findOne({ _id: req.params.id })
             .then((film) =>
                 res.render(`films/edit`, {
                     film: mongooseToObject(film),

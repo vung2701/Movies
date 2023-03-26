@@ -6,7 +6,7 @@ const CheckToken = async (req, res, next) => {
     const token = req.cookies.token;
 
     if (!token) {
-        res.redirect("/validate/login");
+        res.render("validate/login");
     }
 
     try {
