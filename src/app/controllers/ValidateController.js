@@ -37,7 +37,7 @@ class ValidateController {
                 );
                 if (isMatch) {
                     const token = jwt.sign({ id: account._id }, secret, {
-                        expiresIn: "1h",
+                        expiresIn: "30d",
                     });
                     res.cookie("token", token, { httpOnly: true });
                     res.redirect("/");

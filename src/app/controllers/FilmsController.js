@@ -1,7 +1,33 @@
-const { mongooseToObject } = require("../../until/mongoose");
+const {
+    mongooseToObject,
+    multiMongooseToObject,
+} = require("../../until/mongoose");
 const Film = require("../models/Film");
 
 class FilmsController {
+    // [GET] / films
+    async films(req, res, next) {
+        const account = req.account;
+        const perPage = 2; // number of items to display per page
+        const page = req.params.page || 1; // current page number
+        try {
+            const films = await Film.find({})
+                .skip(perPage * page - perPage)
+                .limit(perPage);
+            const count = await Film.countDocuments();
+            const totalPages = Math.ceil(count / perPage);
+            res.render("home", {
+                films: multiMongooseToObject(films),
+                account: JSON.stringify(account),
+                currentPage: page,
+                totalPages,
+                perPage,
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
+
     //[GET] /films/:slug
     detail(req, res, next) {
         const account = req.account;

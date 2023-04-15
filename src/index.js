@@ -64,6 +64,13 @@ app.engine(
             },
             object: (context) => JSON.parse(context),
             isAdmin: (account) => account.role === "admin",
+            filmspager: (totalPages, limit) => {
+                var str = "";
+                for (var i = 1; i <= totalPages; i++) {
+                    str += `<li class="page-item  page-number page-${i}"><a class="page-link" href="/films/?page=${i}&limit=${limit}">${i}</a></li>`;
+                }
+                return str;
+            },
         },
     }),
 );

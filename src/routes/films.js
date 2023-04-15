@@ -11,6 +11,7 @@ router.delete("/destroy/:id", filmsController.destroy);
 router.post("/handle-form-actions", filmsController.handleFormActions);
 router.get("/create", filmsController.create);
 router.post("/store", filmsController.store);
+router.get("/", filmsController.films);
 router.get("/:slug", filmsController.detail);
 
 module.exports = router;
