@@ -67,7 +67,7 @@ app.engine(
             filmspager: (totalPages, limit) => {
                 var str = "";
                 for (var i = 1; i <= totalPages; i++) {
-                    str += `<li class="page-item  page-number page-${i}"><a class="page-link" href="/films/?page=${i}&limit=${limit}">${i}</a></li>`;
+                    str += `<li class="page-item  page-number page-${i}" data-page="${i}"><a class="page-link">${i}</a></li>`;
                 }
                 return str;
             },

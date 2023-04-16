@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const slug = require("mongoose-slug-generator");
 const mongooseDelete = require("mongoose-delete");
-const { paginate } = require("mongoose-paginate-v2");
 
 const Film = new Schema(
     {

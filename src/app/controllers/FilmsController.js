@@ -7,22 +7,13 @@ const Film = require("../models/Film");
 class FilmsController {
     // [GET] / films
     async films(req, res, next) {
-        const account = req.account;
-        const perPage = 2; // number of items to display per page
-        const page = req.params.page || 1; // current page number
+        const limit = 2; // number of items to display per page
+        const page = req.query.page || 1; // current page number
         try {
             const films = await Film.find({})
-                .skip(perPage * page - perPage)
-                .limit(perPage);
-            const count = await Film.countDocuments();
-            const totalPages = Math.ceil(count / perPage);
-            res.render("home", {
-                films: multiMongooseToObject(films),
-                account: JSON.stringify(account),
-                currentPage: page,
-                totalPages,
-                perPage,
-            });
+                .skip(limit * page - limit)
+                .limit(limit);
+            res.json(films);
         } catch (err) {
             next(err);
         }

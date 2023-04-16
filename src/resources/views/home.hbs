@@ -1,60 +1,134 @@
-<div class="container">
-    <div class="row">
-        {{#each films}}
-            <div class="card mt-4" style="width: 250px;">
-                <img
-                    alt=""
-                    style="background-color: transparent;"
-                    class="yt-core-image--fill-parent-height yt-core-image--fill-parent-width yt-core-image yt-core-image--content-mode-scale-aspect-fill yt-core-image--loaded"
-                    src="https://i.ytimg.com/vi/{{this.videoId}}/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&amp;
+<section class="films-section mt-4">
+    <div class="container text-center">
+        <h2 class="films-section__header">The Best Movies</h2>
+        <small class="">Happy is watch a favorite with your family</small>
+        <div class="row" id="displayFilms">
+            {{#each films}}
+                <div class="card mt-4" style="width: 250px;">
+                    <img
+                        alt=""
+                        style="background-color: transparent;"
+                        class="yt-core-image--fill-parent-height yt-core-image--fill-parent-width yt-core-image yt-core-image--content-mode-scale-aspect-fill yt-core-image--loaded"
+                        src="https://i.ytimg.com/vi/{{this.videoId}}/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&amp;
  rs=AOn4CLBWsfznj1R4fm1LJBbPA8ac0-LBdQ"
-                />
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">{{this.title}}</h5>
-                    <p class="card-text">{{this.plot}}</p>
-                    <a href="/films/{{this.slug}}" class="btn btn-success">Watch
-                        now</a>
+                    />
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{this.title}}</h5>
+                        <p class="card-text">{{this.plot}}</p>
+                        <a
+                            href="/films/{{this.slug}}"
+                            class="btn btn-success"
+                        >Watch now</a>
+                    </div>
                 </div>
-            </div>
-        {{/each}}
+            {{/each}}
+        </div>
     </div>
-    <nav aria-label="Page navigation example mt-2">
-        <ul class="pagination justify-content-center">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center mt-4">
             <li class="page-item">
-                <a id="prev-btn" class="page-link" aria-label="Previous">
+                <a id="prev-btn" class="btn page-link" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                     <span class="sr-only">Previous</span>
                 </a>
             </li>
             <div class="d-flex">
-                {{{filmspager totalPages perPage}}}
+                {{{filmspager totalPages limit}}}
             </div>
             <li class="page-item">
-                <a id="next-btn" class="page-link" href="#" aria-label="Next">
+                <a id="next-btn" class="btn page-link" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                     <span class="sr-only">Next</span>
                 </a>
             </li>
         </ul>
     </nav>
-</div>
+</section>
 
 {{! prettier-ignore }}
 <script>
     document.addEventListener("DOMContentLoaded", function(){
+        const totalPages = {{{totalPages}}}
+        const limit = {{{limit}}}
         let currentPage = {{{currentPage}}}
+        loadedPagination(currentPage, totalPages);
         
-        loadedPage(currentPage);
-        
+
+
         $("#prev-btn").click(function(){
-            console.log(currentPage)
+            if(currentPage > 1){
+                currentPage--;
+                getItems(currentPage, limit);
+                loadedPagination(currentPage, totalPages)
+            }
         })
 
-        function loadedPage(page){
-            if($(".page-number").hasClass(`page-${currentPage}`)){
-                $(`.page-${currentPage}`).addClass("active");
-                $(`.page-${currentPage}`).siblings().removeClass("active");
+        $("#next-btn").click(function(){
+            if(currentPage < totalPages){
+                currentPage++;
+                getItems(currentPage, limit);
+                loadedPagination(currentPage, totalPages)
             }
+        })
+
+        $('.page-number').click(function(e){
+            e.preventDefault();
+            currentPage = $(this).data('page');
+            getItems(currentPage, limit);
+            loadedPagination(currentPage, totalPages);
+        });
+
+
+        function loadedPagination(page, totalPages){
+            if(page == 1){
+                $("#prev-btn").parent().addClass("disabled");
+            } else {
+                $("#prev-btn").parent().removeClass("disabled");
+            }
+
+            if(page == totalPages){
+                $("#next-btn").parent().addClass("disabled");
+            } else {
+                $("#next-btn").parent().removeClass("disabled");
+            }
+            
+
+            if($(".page-number").hasClass(`page-${page}`)){
+                $(`.page-${page}`).addClass("active");
+                $(`.page-${page}`).siblings().removeClass("active");
+            }
+        }
+
+        function getItems(page, limit) {
+            $.ajax({
+                type: 'GET',
+                url: `/films?page=${page}&limit=${limit}`,
+                success: (data) => {
+                    let str = "";
+                    for(let i = 0; i < data.length; i++){
+                        const element = data[i];
+                        str += `<div class="card mt-4" style="width: 250px;">
+                <img
+                    alt=""
+                    style="background-color: transparent;"
+                    class="yt-core-image--fill-parent-height yt-core-image--fill-parent-width yt-core-image yt-core-image--content-mode-scale-aspect-fill yt-core-image--loaded"
+                    src="https://i.ytimg.com/vi/${element.videoId}/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&amp;
+ rs=AOn4CLBWsfznj1R4fm1LJBbPA8ac0-LBdQ"
+                />
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">${element.title}</h5>
+                    <p class="card-text">${element.plot}</p>
+                    <a href="/films/${element.slug}" class="btn btn-success">Watch
+                        now</a>
+                </div>
+            </div>`
+                    }
+                    $('#displayFilms').html(str);
+                },
+                error: (err) => {
+                console.error(err);
+                }
+            });
         }
     })
 </script>
