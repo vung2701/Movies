@@ -5,7 +5,7 @@ class SiteController {
     // [GET] / Home
     async home(req, res, next) {
         const account = req.account;
-        const limit = 2; // number of items to display per page
+        const limit = 3; // number of items to display per page
         const page = req.query.page || 1; // current page number
         try {
             const films = await Film.find({})
@@ -13,12 +13,13 @@ class SiteController {
                 .limit(limit);
             const count = await Film.countDocuments();
             const totalPages = Math.ceil(count / limit);
+            const isPager = totalPages > 1;
             res.render("home", {
-                films: multiMongooseToObject(films),
                 account: JSON.stringify(account),
                 currentPage: page,
                 totalPages,
                 limit,
+                isPager,
             });
         } catch (err) {
             next(err);

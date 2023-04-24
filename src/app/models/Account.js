@@ -17,6 +17,10 @@ const Account = new Schema(
             enum: ["admin", "user"],
             default: "user",
         },
+        fullname: { type: String, default: "Not update" },
+        age: { type: String, default: "Not update" },
+        address: { type: String, default: "Not update" },
+        contact: { type: String, default: "Not update" },
     },
     {
         timestamps: true,

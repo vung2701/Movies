@@ -40,7 +40,7 @@
                         aria-expanded="false"
                     >
                         <img
-                            class="header-avatar"
+                            class="avatar"
                             src="{{account.avatar}}"
                             alt="avatar"
                         />
@@ -49,7 +49,7 @@
                     </a>
 
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/me/profile">My profile</a>
+                        <a class="dropdown-item" href="/profile">My profile</a>
                         {{#if (isAdmin account)}}
                             <a class="dropdown-item" href="/me/stored-films">My
                                 film</a>

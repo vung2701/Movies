@@ -1,0 +1,37 @@
+{{#with (object account)}}
+    <section class="profile">
+        <div class="container mt-4">
+            <div class="d-flex">
+                <img class="thumbnail-avatar" src="{{avatar}}" alt="avatar" />
+                <div class="infor">
+                    <h3>
+                        {{username}}
+                    </h3>
+                    <p><strong>Fullname: </strong> {{fullname}}</p>
+                    <p><strong>Age: </strong> {{age}}</p>
+                    <p><strong>Address: </strong> {{address}}</p>
+                    <p><strong>Contact: </strong> {{contact}}</p>
+                    <a
+                        class="btn btn-primary mt-4"
+                        href="/profile/upload"
+                    >Update Now</a>
+                </div>
+            </div>
+            <p class="profile__intro mt-4">
+                Hi my name is
+                <b>{{fullname}}</b>
+                and currently I’m
+                {{age}}
+                years of age. I have a nice personality and am very easy to get
+                along with. This is my first semester of secondary school a lot
+                of other people. What I to do in my spare time is to play video
+                games and just relax with friends and family. People may see
+                that as somewhat weird to play video games as a hobby, but it is
+                what I really to do. I prefer to enjoy things at my own space.
+                This whole blogging thing is new to me and I really it. It could
+                probably make me new friends and people that have common
+                interests with me.
+            </p>
+        </div>
+    </section>
+{{/with}}

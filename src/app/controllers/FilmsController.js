@@ -1,14 +1,11 @@
-const {
-    mongooseToObject,
-    multiMongooseToObject,
-} = require("../../until/mongoose");
+const { mongooseToObject } = require("../../until/mongoose");
 const Film = require("../models/Film");
 
 class FilmsController {
     // [GET] / films
     async films(req, res, next) {
-        const limit = 2; // number of items to display per page
-        const page = req.query.page || 1; // current page number
+        const limit = req.query.limit; // number of items to display per page
+        const page = req.query.page; // current page number
         try {
             const films = await Film.find({})
                 .skip(limit * page - limit)

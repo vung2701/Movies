@@ -12,7 +12,8 @@
 }
 .card {
     background-color: #e9e5e5;
-    margin: 0 12px;
+    width: 29.3333%;
+    margin: 2%;
 }
 
 .card-body {
@@ -41,15 +42,19 @@
 /* Detail page */
 .hero-unit {
     padding: 10px 0;
-    background-color: black;
-    color: #fefefe;
+    background-color: #000;
+    color: #fff;
+}
+
+.hero-unit .container {
+    border: 1px solid #bbb;
 }
 
 .hero-image {
     position: relative;
     left: 50%;
     transform: translateX(-50%);
-    width: 70%;
+    width: 80%;
 }
 
 .hero-image img {
@@ -68,23 +73,14 @@
 }
 
 .hero-content {
-    width: 70%;
+    width: 80%;
     margin: 0 auto;
-    padding: 24px 0;
+    padding: 24px;
 }
 .hero-content__header {
     font-size: 24px;
     font-weight: 600;
     margin-bottom: 12px;
-}
-
-.hero-content__para {
-    width: 50%;
-    margin-left: 32px;
-}
-
-.hero-content__plot {
-    width: 50%;
 }
 
 // Search form
@@ -168,12 +164,33 @@
 }
 
 // avatar
-.header-avatar {
+.avatar {
     width: 30px;
     height: 30px;
     border-radius: 50%;
 }
 
-.profile-avatar {
-    border-radius: 50%;
+// Profile
+.profile .container {
+    padding: 0;
+    background-color: rgb(152, 179, 110);
+    color: white;
+    border: 1px solid green;
+}
+
+.infor {
+    flex: 1;
+    padding: 16px;
+    font-size: 20px;
+    border-bottom: 1px solid rgb(190, 221, 181);
+}
+
+.infor h3 {
+    font-size: 36px;
+    margin-bottom: 24px;
+}
+
+.profile__intro {
+    font-size: 20px;
+    padding: 8px 10%;
 }
